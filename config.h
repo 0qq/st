@@ -99,30 +99,30 @@ float alpha = 0.95;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
     /* 8 normal colors */
-    [0] = "#000000", /* black   */
-    [1] = "#ff5555", /* red     */
-    [2] = "#50fa7b", /* green   */
-    [3] = "#f1fa8c", /* yellow  */
-    [4] = "#bd93f9", /* blue    */
-    [5] = "#ff79c6", /* magenta */
-    [6] = "#8be9fd", /* cyan    */
-    [7] = "#bbbbbb", /* white   */
+    [0]   = "#000000", /* black   */
+    [1]   = "#ff5555", /* red     */
+    [2]   = "#50fa7b", /* green   */
+    [3]   = "#f1fa8c", /* yellow  */
+    [4]   = "#bd93f9", /* blue    */
+    [5]   = "#ff79c6", /* magenta */
+    [6]   = "#8be9fd", /* cyan    */
+    [7]   = "#bbbbbb", /* white   */
 
     /* 8 bright colors */
-    [8] = "#343871", /* black   */
-    [9] = "#ff5555", /* red     */
-    [10] = "#50fa7b", /* green   */
-    [11] = "#f1fa8c", /* yellow  */
-    [12] = "#bd93f9", /* blue    */
-    [13] = "#ff79c6", /* magenta */
-    [14] = "#8be9fd", /* cyan    */
-    [15] = "#bbbbbb", /* white   */
+    [8]   = "#343871", /* black   */
+    [9]   = "#ff5555", /* red     */
+    [10]  = "#50fa7b", /* green   */
+    [11]  = "#f1fa8c", /* yellow  */
+    [12]  = "#bd93f9", /* blue    */
+    [13]  = "#ff79c6", /* magenta */
+    [14]  = "#8be9fd", /* cyan    */
+    [15]  = "#bbbbbb", /* white   */
 
-    [255] = 0,
+    [255] = 0        ,
 
     /* special colors */
-    "#cccccc",
- 	"#555555",
+    "#cccccc"        ,
+ 	"#555555"        ,
     [258] = "#1e2029", /* background */
     [259] = "#f8f8f2", /* foreground */
 };
@@ -132,9 +132,9 @@ static const char *colorname[] = {
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 259;
-unsigned int defaultbg = 258;
-static unsigned int defaultcs = 259;
+unsigned int defaultfg         = 259;
+unsigned int defaultbg         = 258;
+static unsigned int defaultcs  = 259;
 static unsigned int defaultrcs = 259;
 
 /*
@@ -157,8 +157,8 @@ static unsigned int rows = 24;
  * Default colour and shape of the mouse cursor
  */
 static unsigned int mouseshape = XC_xterm;
-static unsigned int mousefg = 7;
-static unsigned int mousebg = 0;
+static unsigned int mousefg    = 7;
+static unsigned int mousebg    = 0;
 
 /*
  * Color used to display font attributes when fontconfig selected a font which
@@ -178,14 +178,14 @@ static uint forcemousemod = ShiftMask;
  * Beware that overloading Button1 will disable the selection.
  */
 static MouseShortcut mshortcuts[] = {
-	/* mask                 button   function        argument       release */
-	{ ShiftMask,            Button4, kscrollup,      {.i = 1} },
-	{ ShiftMask,            Button5, kscrolldown,    {.i = 1} },
-	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
-	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
-	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
-	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
-	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
+	/* mask     , button  , function   , argument            , release */
+	{ ShiftMask , Button4 , kscrollup  , {.i = 1} }          ,
+	{ ShiftMask , Button5 , kscrolldown, {.i = 1} }          ,
+	{ XK_ANY_MOD, Button2 , selpaste   , {.i = 0}            ,      1 },
+	{ ShiftMask , Button4 , ttysend    , {.s = "\033[5;2~"} },
+	{ XK_ANY_MOD, Button4 , ttysend    , {.s = "\031"} }     ,
+	{ ShiftMask , Button5 , ttysend    , {.s = "\033[6;2~"} },
+	{ XK_ANY_MOD, Button5 , ttysend    , {.s = "\005"} }     ,
 };
 
 /* Internal keyboard shortcuts. */
@@ -193,23 +193,23 @@ static MouseShortcut mshortcuts[] = {
 #define TERMMOD (ControlMask|ShiftMask)
 
 static Shortcut shortcuts[] = {
-	/* mask                 keysym          function        argument */
-	{ XK_ANY_MOD,           XK_Break,       sendbreak,      {.i =  0} },
-	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
-	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
-	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
-	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
-	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
-	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
-	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
-	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
-	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
-	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ MODKEY,               XK_Page_Up,     kscrollup,      {.i =  1} },
-	{ MODKEY,               XK_Page_Down,   kscrolldown,    {.i =  1} },
-	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
-	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+	/* mask      , keysym       , function     , argument */
+	{ XK_ANY_MOD , XK_Break     , sendbreak    , {.i =  0} }  ,
+	{ ControlMask, XK_Print     , toggleprinter, {.i =  0} }  ,
+	{ ShiftMask  , XK_Print     , printscreen  , {.i =  0} }  ,
+	{ XK_ANY_MOD , XK_Print     , printsel     , {.i =  0} }  ,
+	{ TERMMOD    , XK_Prior     , zoom         , {.f = +1} }  ,
+	{ TERMMOD    , XK_Next      , zoom         , {.f = -1} }  ,
+	{ TERMMOD    , XK_Home      , zoomreset    , {.f =  0} }  ,
+	{ TERMMOD    , XK_C         , clipcopy     , {.i =  0} }  ,
+	{ TERMMOD    , XK_V         , clippaste    , {.i =  0} }  ,
+	{ TERMMOD    , XK_Y         , selpaste     , {.i =  0} }  ,
+	{ ShiftMask  , XK_Insert    , selpaste     , {.i =  0} }  ,
+	{ TERMMOD    , XK_Num_Lock  , numlock      , {.i =  0} }  ,
+	{ MODKEY     , XK_Page_Up   , kscrollup    , {.i =  1} }  ,
+	{ MODKEY     , XK_Page_Down , kscrolldown  , {.i =  1} }  ,
+	{ ShiftMask  , XK_Page_Up   , kscrollup    ,  {.i = -1} } ,
+	{ ShiftMask  , XK_Page_Down , kscrolldown  , {.i = -1} }  ,
 };
 
 /*
